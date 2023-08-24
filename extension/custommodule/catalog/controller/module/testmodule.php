@@ -17,9 +17,11 @@ class Testmodule extends \Opencart\System\Engine\Controller
 	public function showText($event, $data, $output): ?string
     {
         if ((!isset($this->request->get['route']) || $this->request->get['route'] == 'common/home') &&
-            $this->config->get($this->moduleSetting . '_status'))
+            $this->config->get($this->moduleSetting . '_status') && $this->customer->isLogged())
         {
-            return $this->load->view($this->extension) . $output;
+            return $this->load->view($this->extension, [
+                'text' => $this->config->get($this->moduleSetting . '_text')
+            ]) . $output;
         }
 
         return null;

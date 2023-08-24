@@ -33,6 +33,7 @@ class Testmodule extends \Opencart\System\Engine\Controller
         $data['save'] = $this->url->link($this->extension . '.save', 'user_token=' . $this->session->data['user_token']);
         $data['back'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module');
 
+        $data[$this->moduleSetting . '_text'] =  $this->config->get($this->moduleSetting . '_text');
         $data[$this->moduleSetting . '_status'] = $this->config->get($this->moduleSetting . '_status');
 
 
