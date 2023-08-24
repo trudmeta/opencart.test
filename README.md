@@ -43,3 +43,12 @@ OpenCart!" на главной странице магазина.
 "Hello, OpenCart!"
 ```
 ![Admin panel](task_3.enter_text.jpg)
+
+
+### Задача 4: PHP-задача
+```angular2html
+Напишите функцию на PHP, которая принимает строку и возвращает строку, в которой
+каждое слово начинается с большой буквы, а остальные символы слова — маленькие.
+```
+![Admin panel](task_4.uppercase.jpg)
+![Admin panel](task_1.show_text.jpg)

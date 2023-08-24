@@ -20,7 +20,7 @@ class Testmodule extends \Opencart\System\Engine\Controller
             $this->config->get($this->moduleSetting . '_status') && $this->customer->isLogged())
         {
             return $this->load->view($this->extension, [
-                'text' => $this->config->get($this->moduleSetting . '_text')
+                'text' => $this->firstUpper($this->config->get($this->moduleSetting . '_text'))
             ]) . $output;
         }
 
@@ -37,5 +37,10 @@ class Testmodule extends \Opencart\System\Engine\Controller
         }
 
         return null;
+    }
+
+    private function firstUpper(string $str): string
+    {
+        return mb_convert_case($str, MB_CASE_TITLE, 'UTF-8');
     }
 }
