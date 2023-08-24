@@ -12,3 +12,14 @@
 ```
 ![Admin panel](Dashboard.jpg)
 ![Admin panel](Store.jpg)
+
+
+### Задача 1: Создание нового модуля
+```
+Создайте простой модуль для OpenCart, который будет выводить фразу "Hello,
+OpenCart!" на главной странице магазина.
+Модуль должен иметь административную часть, где можно включать/выключать
+отображение этой фразы.
+```
+![Admin panel](task_1.module_active.jpg)
+![Admin panel](task_1.show_text.jpg)
