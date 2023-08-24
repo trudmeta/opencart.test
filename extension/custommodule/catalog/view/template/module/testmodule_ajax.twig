@@ -1,0 +1,23 @@
+<script>
+    if (window.jQuery) {
+
+        $.ajax({
+            url: 'index.php?route=extension/custommodule/module/ajax',
+            type: 'post',
+            success: function (json) {
+
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+
+    } else {
+
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', "index.php?route=extension/custommodule/module/ajax", true);
+        xhr.setRequestHeader('Content-type', 'application/json; charset=UTF-8')
+        xhr.send();
+
+    }
+</script>

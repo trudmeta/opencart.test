@@ -20,10 +20,11 @@
         <form id="form-module" action="{{ save }}" method="post" data-oc-toggle="ajax">
 
           <ul class="nav nav-tabs">
-            <li class="nav-item"><a href="#tab-general" data-bs-toggle="tab" class="nav-link active">{{ tab_general }}</a></li>
+            <li class="nav-item"><a href="#tab-general" data-bs-toggle="tab" class="nav-link {% if not page %} active {% endif %}">{{ tab_general }}</a></li>
+            <li class="nav-item"><a href="#tab-visits" data-bs-toggle="tab" title="Main page visits" class="nav-link {% if page %} active {% endif %}">{{ tab_visits }}</a></li>
           </ul>
           <div class="tab-content">
-            <div id="tab-general" class="tab-pane active">
+            <div id="tab-general" class="tab-pane {% if not page %} active {% endif %}">
 
               <div class="row mb-3">
                 <label for="input-status" class="col-sm-2 col-form-label">{{ entry_status }}</label>
@@ -37,6 +38,36 @@
 
             </div>
 
+            <div id="tab-visits" class="tab-pane {% if page %} active {% endif %}">
+              <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <td style="width: 5%;" class="text-center">id</td>
+                  <td class="text-center">created_at</td>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% if visits %}
+                  {% for visit in visits %}
+                    <tr id="startup-row{{ visit.id }}">
+                      <td class="text-center" style="width: 5%">{{ visit.id }}</td>
+                      <td class="text-center">{{ visit.created_at }}</td>
+                    </tr>
+                  {% endfor %}
+                {% else %}
+                  <tr>
+                    <td class="text-center" colspan="7">{{ text_no_results }}</td>
+                  </tr>
+                {% endif %}
+                </tbody>
+              </table>
+
+              <div class="row">
+                <div class="col-sm-6 text-start">{{ pagination }}</div>
+              </div>
+
+            </div>
           </div>
 
         </form>

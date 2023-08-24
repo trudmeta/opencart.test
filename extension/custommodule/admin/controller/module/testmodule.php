@@ -36,6 +36,44 @@ class Testmodule extends \Opencart\System\Engine\Controller
         $data[$this->moduleSetting . '_status'] = $this->config->get($this->moduleSetting . '_status');
 
 
+        if (isset($this->request->get['page'])) {
+            $page = (int)$this->request->get['page'];
+            $data['page'] = $page;
+        } else {
+            $page = 1;
+        }
+
+        $filter_data = [
+            'start'           => ($page - 1) * $this->config->get('config_pagination_admin'),
+            'limit'           => $this->config->get('config_pagination_admin')
+        ];
+
+        $this->load->model('extension/custommodule/module/testmodule');
+        $visitsDB = $this->model_extension_custommodule_module_testmodule->getVisits($filter_data);
+
+        $visits_total = $this->model_extension_custommodule_module_testmodule->getTotalVisits();
+
+        $data['pagination'] = $this->load->controller('common/pagination', [
+            'total' => $visits_total,
+            'page'  => $page,
+            'limit' => $this->config->get('config_pagination_admin'),
+            'url'   => $this->url->link('extension/custommodule/module/testmodule', 'user_token=' . $this->session->data['user_token'] . '&page={page}')
+        ]);
+
+        $visits = [];
+
+        foreach ($visitsDB as $key => $visit) {
+            $visits[$key]['id'] = $visit['id'];
+
+            $d = new \DateTimeImmutable($visit['created_at']);
+            $tzo = new \DateTimeZone('Europe/Kiev');
+
+            $local = $d->setTimezone($tzo);
+            $visits[$key]['created_at'] = $local->format("Y-m-d H:i:s");
+        }
+        $data['visits'] = $visits;
+
+
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');
@@ -77,6 +115,18 @@ class Testmodule extends \Opencart\System\Engine\Controller
             'status'	 => 1,
             'sort_order' => 0
         ]);
+
+        $this->model_setting_event->addEvent([
+            'code'		 => 'custommodule_last_visit',
+            'description'=> 'custom test module',
+            'trigger'	 => 'catalog/view/common/footer/after',
+            'action'	 => $this->extension . '.mainPageVisits',
+            'status'	 => 1,
+            'sort_order' => 0
+        ]);
+
+        $this->load->model('extension/custommodule/module/testmodule');
+        $this->model_extension_custommodule_module_testmodule->install();
     }
 
     public function uninstall(): void
@@ -84,5 +134,9 @@ class Testmodule extends \Opencart\System\Engine\Controller
         $this->load->model('setting/event');
 
         $this->model_setting_event->deleteEventByCode('custommodule');
+        $this->model_setting_event->deleteEventByCode('custommodule_last_visit');
+
+        $this->load->model('extension/custommodule/module/testmodule');
+        $this->model_extension_custommodule_module_testmodule->uninstall();
     }
 }
